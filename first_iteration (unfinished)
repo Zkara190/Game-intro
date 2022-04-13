@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class bigNode {
+	public:
+		bigNode () : backhand(NULL), forehand(NULL), response(NULL), death(NULL) {}
+		void event(bigNode *b, bigNode *f, string *r) 
+		{backhand = b; forehand = f; response = r;}
+		bigNode *getBack() {return backhand;}
+		bigNode *getFore() { return forehand;}
+		string *getResponse() {return response;}
+		string *death() { return deathprompt; }
+	private:
+		string *response;
+		bigNode *backhand; // left node
+		bigNode *forehand; // right node
+		string *deathprompt;
+};
+
+string adventure(bigNode *T)
+{
+	if (T -> getResponse() == "left") {
+		return (adventure(T->getBack()));
+	}
+	else if (T-> getResponse() == "right") {
+		return (adventure(T->getFore()));
+	}
+	else return T->death();
+}
+
+ int main()
+{
+/*	vector<Node> A;  // create space for nodes
+	int sizure;
+	cin >> sizure;
+	A.resize(sizure);
+	A[0].my_init('+',0.0,&A[1],&A[2],NULL);
+	A[1].my_init('n',2.0,NULL,NULL, NULL);
+	A[2].my_init('+',0.0,&A[3],&A[4], NULL);
+	A[3].my_init('n',7.2,NULL,NULL, NULL);
+	A[4].my_init('*',0.0,&A[5],&A[6], NULL);
+	A[5].my_init('n',5.0,NULL,NULL, NULL);
+	A[6].my_init('n',4.5,NULL,NULL, NULL);
+	cout << my_compute(&A[0]);
+	cout << A[0].getOp();
+
+	return 0;
+*/
