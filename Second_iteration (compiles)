@@ -4,30 +4,55 @@
 
 using namespace std;
 
-class bigNode {
+class Events { // trees for events and choices
 public:
-	bigNode() : backhand(NULL), deathprompt(NULL), forehand(NULL), response(NULL) {}
-	void event(string r, string d, bigNode *b, bigNode *f)
+	Events() : backhand(NULL), deathprompt(NULL), forehand(NULL), response(NULL), combatNode(NULL) {}
+	void event(string r, string d, Events *b, Events *f, Combats *c)
 	{
-		backhand = b; forehand = f; response = r; deathprompt = d;
+		backhand = b; forehand = f; response = r; combatNode = c;
 	}
-	bigNode* getBack() { return backhand; }
-	bigNode* getFore() { return forehand; }
+	Events* getBack() { return backhand; }
+	Events* getFore() { return forehand; }
+	Combats* getCombat() { retrun combatNode; }
+	void setResponse(char res) { response = res;}
 	string getResponse() { return response; }
 	string death() { return deathprompt; }
 private:
 	string response;
-	string deathprompt;
-	bigNode* backhand; // left node
-	bigNode* forehand; // right node
+	string deathprompt = "You have met your doom!";
+	Events* backhand; // left node
+	Events* forehand; // right node
+	Combats* combatNode;
 };
 
-string adventure(bigNode* T)
+class Combats { // second tree format to handle combat
+public:
+	Combats() : attack(NULL), defend(NULL), eventNode(NULL), response(NULL), deathprompt(NULL), {}
+	// a & d are connections, event node returns back to main story, response is the contents of node, death is if the node is a death node
+	void event( Combats *a, Combats *d, Events *e, string r)
+	{
+		attack = a; defend = d; eventNode = e; response = r;
+	}
+	Combats* getAttaack() { return backhand; }
+	Combats* getDefend() { return forehand; }
+	Events* getEvents() { return eventNode; }
+	void setResponse(char res) { response = res;}
+	string getResponse() { return response; }
+	string death() { return deathprompt; }
+private:
+	string response;
+	string deathprompt = "You have met your doom!";
+    Combats* attack; // attack node
+	Combats* defend; // defend node
+	Events* eventNode;
+};
+
+string adventure(Events* T)
 {
-	if (T->getResponse() == "left") {
+	if (T->getResponse() == "L") {
 		return (adventure(T->getBack()));
 	}
-	else if (T->getResponse() == "right") {
+	else if (T->getResponse() == "R") {
 		return (adventure(T->getFore()));
 	}
 	else return T->death();
@@ -42,11 +67,7 @@ int main()
 		A.resize(sizure);
 		A[0].my_init('+',0.0,&A[1],&A[2],NULL);
 		A[1].my_init('n',2.0,NULL,NULL, NULL);
-		A[2].my_init('+',0.0,&A[3],&A[4], NULL);
-		A[3].my_init('n',7.2,NULL,NULL, NULL);
-		A[4].my_init('*',0.0,&A[5],&A[6], NULL);
-		A[5].my_init('n',5.0,NULL,NULL, NULL);
-		A[6].my_init('n',4.5,NULL,NULL, NULL);
+
 		cout << my_compute(&A[0]);
 		cout << A[0].getOp();
 	*/
